@@ -46,7 +46,7 @@ const renderTodos = function(todos, filters){
     
 }
 
-renderTodos(todos, filters) // for the initial rendering
+renderTodos(todos, filters) // for the initial rendering when there is no text for filtering
 
 
 // Filter todos
