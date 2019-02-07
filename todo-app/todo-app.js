@@ -1,67 +1,32 @@
-const todos = [{
-    text: 'Order cat food',
-    completed: false
-}, {
-    text: 'Clean kitchen',
-    completed: true
-}, {
-    text: 'Buy food',
-    completed: true
-}, {
-    text: 'Do work',
-    completed: false
-}, {
-    text: 'Exercise',
-    completed: true
-}]
+'use strict'
+
+let todos = getSavedTodos()
 
 const filters = {
-    searchText: ''
+    searchText: '',
+    hideCompleted: false
 }
 
+renderTodos(todos, filters)
 
-const renderTodos = function(todos, filters){
-    console.log(filters)
-    const filteredTodos = todos.filter(function (todo){
-        console.log(todo.text.toLowerCase().includes(filters.searchText.toLowerCase()))
-        return todo.text.toLowerCase().includes(filters.searchText.toLowerCase())
-    })
-
-    console.log(filteredTodos)
-    const incompleteTodos = filteredTodos.filter(function (todo) {
-        return !todo.completed
-    })
-
-    document.querySelector('#todos').innerHTML = ''
-
-    const summary = document.createElement('h2')
-    summary.textContent = `You have ${incompleteTodos.length} todos left`
-    document.querySelector('#todos').appendChild(summary)
-
-    filteredTodos.forEach(function(todo){
-        const newPara = document.createElement('p')
-        newPara.textContent = todo.text
-        document.querySelector('#todos').appendChild(newPara)
-    });
-    
-}
-
-renderTodos(todos, filters) // for the initial rendering when there is no text for filtering
-
-
-// Filter todos
-document.querySelector('#search-text').addEventListener('input', function(e){
+document.querySelector('#search-text').addEventListener('input', (e) => {
     filters.searchText = e.target.value
     renderTodos(todos, filters)
 })
 
- 
-//Listen for new todo creation
-document.querySelector('#add-todo').addEventListener('click', function (e) {
-   const newTodo = {};
-   newTodo.text  = document.getElementById('new-todo-text').value
-   newTodo.completed = false
-   todos.push(newTodo)
-   renderTodos(todos,filters)
+document.querySelector('#new-todo').addEventListener('submit', (e) => {
+    e.preventDefault()
+    todos.push({
+        id: uuidv4(),
+        text: e.target.elements.text.value,
+        completed: false
+    })
+    saveTodos(todos)
+    renderTodos(todos, filters)
+    e.target.elements.text.value = ''
 })
 
+document.querySelector('#hide-completed').addEventListener('change', (e) => {
+    filters.hideCompleted = e.target.checked
+    renderTodos(todos, filters)
+})

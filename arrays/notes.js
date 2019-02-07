@@ -35,6 +35,10 @@ const findNotes = function (notes, query) {
     })
 }
 
+// console.log(findNotes(notes, 'eating'))
+
+// const note = findNote(notes, 'some other office modification')
+// console.log(note)
 
 sortNotes(notes)
 console.log(notes)
