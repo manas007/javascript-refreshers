@@ -28,3 +28,31 @@ myPromise.then((data) => {
 }, (err) => {
     console.log(err)
 }) 
+
+
+// example of promise chaining
+const getDataPromise = (num) => new Promise((resolve, reject) => {
+    setTimeout(() => {
+        typeof num === 'number' ? resolve(num * 2) : reject('You did not enter a numeric value')
+    }, 2000)
+})
+
+getDataPromise(2).then((data) => {
+    getDataPromise(data).then((data) => {
+        console.log(`Promise data ${data}`)
+    }, (error) =>{
+        console.log(error)
+    })
+},
+(error) => {
+    console.log(error)
+})
+
+// even better promise chaining
+getDataPromise(10).then((data) => {
+    return getDataPromise(data)
+}).then((data) => {
+    console.log('Even better promise chaining ' + data)
+}).catch((error) => { // we have a single catch function that takes care of the reject callback. 
+    console.log(`Error occured : ${error}`)
+})
